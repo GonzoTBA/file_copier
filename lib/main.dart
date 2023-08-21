@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 235, 241, 194)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'File copier'),
@@ -53,7 +53,11 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.only(
+              top: 40.0, 
+              bottom: 10.0,
+              left: 20.0,
+              right: 20.0),
             child: ElevatedButton(
               style: buttonStyle,
               onPressed: null,
@@ -61,7 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.only(
+              top: 20.0, 
+              bottom: 40.0,
+              left: 20.0,
+              right: 20.0),
               child: ElevatedButton(
                 style: buttonStyle,
                 onPressed: null,
@@ -69,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: const Text(
                 'Message area'
               )
