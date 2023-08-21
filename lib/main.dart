@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:easy_folder_picker/DirectoryList.dart';
+import 'dart:io';
+import 'permissions.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+}
+
+void requestPermissions() async {
+  print('Requesting permission');
+  await requestStoragePermission();
 }
 
 class MyApp extends StatelessWidget {
@@ -10,6 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -30,11 +40,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String? sourceDirectory;
+  String? destinationDirectory;
 
-  void _incrementCounter() {
+  Future<void> _pickSourceDirectory() async {
+    String? result = await FilePicker.platform.getDirectoryPath();
+
     setState(() {
+      sourceDirectory = result;
     });
   }
+
+  Future<void> _pickDestinationDirectory() async {
+    String? result = await FilePicker.platform.getDirectoryPath();
+
+    setState(() {
+      destinationDirectory = result;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,42 +71,48 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-            margin: const EdgeInsets.only(
-              top: 40.0, 
-              bottom: 10.0,
-              left: 20.0,
-              right: 20.0),
-            child: ElevatedButton(
-              style: buttonStyle,
-              onPressed: null,
-              child: const Text('Choose origin directory'),
-            ),
-            ),
-            Container(
-            margin: const EdgeInsets.only(
-              top: 20.0, 
-              bottom: 40.0,
-              left: 20.0,
-              right: 20.0),
+      body: Container(
+        margin: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
               child: ElevatedButton(
                 style: buttonStyle,
-                onPressed: null,
-                child: const Text('Choose final directory'),
+                onPressed: () async {
+                  _pickSourceDirectory();
+                },
+                child: const Text('Choose origin directory'),
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: const Text(
-                'Message area'
-              )
-            ),
-          ],
+              const SizedBox(height: 20),
+              Text(
+                'Source directory: ${sourceDirectory ?? "Not selected"}',
+              ),
+              const SizedBox(height: 40,),
+              Container(
+                child: ElevatedButton(
+                  style: buttonStyle,
+                  onPressed: () async {
+                    _pickDestinationDirectory();
+                  },
+                  child: const Text('Choose final directory'),
+                ),
+              ),
+              const SizedBox(height: 20,),
+              Text(
+                'Destination directory: ${destinationDirectory ?? "Not selected"}'
+              ),
+              SizedBox(height: 40,),
+              Container(
+                child: const Text(
+                  'Message area'
+                )
+              ),
+            ],
+          ),
         ),
       ),
     );
