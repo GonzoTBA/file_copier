@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           await sourceFile.delete();
         } else {
           // If it doesn't, move it to destination
-          await sourceFile.rename(join(destinationDir!.path, sourceFileName));
+          await sourceFile.rename(join(destinationDir.path, sourceFileName));
         }
       }
       double actualProgress = (counter / sourceFiles.length) * 100;
@@ -129,10 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
       textStyle: const TextStyle(fontSize: 20)
     );
     final ProgressDialog pr = ProgressDialog(context);
-    // pr =  ProgressDialog(
-    //   context,type: ProgressDialogType.download, 
-    //   isDismissible: false, 
-    //   showLogs: true);
     pr.style(
       message: 'Downloading file...',
       borderRadius: 10.0,
@@ -189,16 +185,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 40,),
               ElevatedButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 194, 236, 196),
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 onPressed: () async {
                   await moveFiles(context);
                 }, 
                 child: const Text(
                   'Go'
-                )),
-                const SizedBox(height: 20,),
-              Container(
-                child: const Text(
-                  'Message area'
                 )
               ),
             ],
