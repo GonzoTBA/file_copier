@@ -98,7 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // Show progress indicator
     await pr.show();
 
+    int counter = 0;
     for (var sourceFile in sourceFiles) {
+      counter += 1;
       if (sourceFile is File) {
         String sourceFileName = basename(sourceFile.path);
         if (destinationFileNames.contains(sourceFileName)) {
@@ -109,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
           await sourceFile.rename(join(destinationDir!.path, sourceFileName));
         }
       }
+      double actualProgress = (counter / sourceFiles.length) * 100;
       pr.update(
         progress: actualProgress,
         message: 'Working...');
